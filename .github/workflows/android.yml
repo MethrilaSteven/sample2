@@ -2,24 +2,25 @@ name: Build APK
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
-    name: Build Flavors
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
+          java-version: '17'
           distribution: 'temurin'
-          java-version: 17
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v3
@@ -34,20 +35,23 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Make gradlew executable
+      - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
 
-      - name: Build APK for DTT Staging
+      - name: Build DTT Staging APK (Debug)
         run: ./gradlew :app:assembleDttStagingDebug --stacktrace
 
-      - name: Build APK for Nita Staging
+      - name: Build Nita Staging APK (Debug)
         run: ./gradlew :app:assembleNitaStagingDebug --stacktrace
 
-      - name: Build APK for Production
+      - name: Build Production APK (Release)
         run: ./gradlew :app:assembleProductionRelease --stacktrace
 
-      - name: Upload APK artifacts
-        uses: actions/upload-artifact@v4
+      - name: Upload APK Artifacts
+        uses: actions/upload-artifact@v3
         with:
-          name: apk-artifacts
-          path: app/build/outputs/apk/
+          name: built-apks
+          path: |
+            app/build/outputs/apk/dttStaging/debug/*.apk
+            app/build/outputs/apk/nitaStaging/debug/*.apk
+            app/build/outputs/apk/production/release/*.apk
