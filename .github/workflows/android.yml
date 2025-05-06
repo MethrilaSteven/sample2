@@ -34,6 +34,9 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build APK for DTT Staging
         run: ./gradlew :app:assembleDttStagingDebug --stacktrace
 
