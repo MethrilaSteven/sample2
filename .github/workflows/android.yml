@@ -29,7 +29,10 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Set up Android SDK
-        uses: react-native-community/setup-android@v3
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 33
+          build-tools: 30.0.3
 
       - name: Build APK for DTT Staging
         run: ./gradlew :app:assembleDttStagingDebug --stacktrace
