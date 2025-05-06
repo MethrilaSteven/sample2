@@ -29,7 +29,7 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
         with:
           api-level: 33
           build-tools: 30.0.3
@@ -44,7 +44,7 @@ jobs:
         run: ./gradlew :app:assembleProductionRelease --stacktrace
 
       - name: Upload APK Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: built-apks
           path: |
